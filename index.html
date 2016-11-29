@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Chromecast feature</title>
+	<link rel="stylesheet" href="">
+	<!-- Core Library -->
+	<script type="text/javascript"
+        src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js"></script>
+  <script type="text/javascript" 
+  			src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+</head>
+<body>
+	
+	<!-- <button is="google-cast-button"></button> -->
+	
+	<script type="text/javascript">
+		// check if the API is available and initialize it
+		// window['__onGCastApiAvailable'] = function(isAvailable) {
+		//   if (isAvailable) {
+		//     initializeCastApi();
+		//   }
+		// };
+
+
+		// // Init api
+		// initializeCastApi = function() {
+		//   cast.framework.CastContext.getInstance().setOptions({
+		//     receiverApplicationId: '33D44AE0',
+		//     autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
+		//   });
+		// };
+
+		// Once the CastContext has been initialized, the app can retrieve the current Cast session at any time
+		// var castSession = cast.framework.CastContext.getInstance().getCurrentSession();
+	</script>
+
+	<form>
+    <button type="button" id="castme">Click To Cast</button>
+  </form>
+  
+  <script type="text/javascript" src="js/cast.js"></script>
+	
+</body>
+</html>
