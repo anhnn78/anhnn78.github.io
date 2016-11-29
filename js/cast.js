@@ -69,8 +69,8 @@ function loadMedia() {
   }
 
   var mediaInfo = new
-chrome.cast.media.MediaInfo('http://i.imgur.com/IFD14.jpg');
-  mediaInfo.contentType = 'image/jpg';
+chrome.cast.media.MediaInfo('https://google.com');
+  
 
   var request = new chrome.cast.media.LoadRequest(mediaInfo);
   request.autoplay = true;
