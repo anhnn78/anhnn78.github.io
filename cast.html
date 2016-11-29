@@ -32,7 +32,7 @@ html, body, #wrapper {
 input {
   font-family: "Arial", Arial, sans-serif;
   font-size: 40px;
-  font-weight: bold;	
+  font-weight: bold;  
 }
 .border {
     border: 2px solid #cccccc;
@@ -170,8 +170,8 @@ function sendMessage(message) {
  */
 function appendMessage(message) {
   console.log(message);
-  var dw = document.getElementById("debugmessage");
-  dw.innerHTML += '\n' + JSON.stringify(message);
+  var dw = document.getElementById("outputFrame");
+  dw.src += '\n' + JSON.stringify(message);
 };
 
 /**
@@ -192,21 +192,22 @@ function transcribe(words) {
 </head>
 <body>
   <table id="wrapper">
-	<tr>
-		<td>
-			<form method="get" action="JavaScript:update();">
-				<input id="input" class="border" type="text" size="30" onwebkitspeechchange="transcribe(this.value)" x-webkit-speech/>
-			</form>
-		</td>
-	</tr>
-  </table>	
+  <tr>
+    <td>
+      <form method="get" action="JavaScript:update();">
+        <input id="input" class="border" type="text" size="30" onwebkitspeechchange="transcribe(this.value)" x-webkit-speech/>
+      </form>
+    </td>
+  </tr>
+  </table>  
 
   <!-- Debbugging output -->
-  <div style="margin:10px; visibility:hidden;">
+ <!--  <div style="margin:10px; visibility:hidden;">
     <textarea rows="20" cols="70" id="debugmessage">
     </textarea>
-  </div>
+  </div> -->
 
+  <iframe src="" style="width: 100%; height: 100%;" id="outputFrame"></iframe>
 <script type="text/javascript">
   document.getElementById("input").focus();
 </script>
