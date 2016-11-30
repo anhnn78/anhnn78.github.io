@@ -93,7 +93,7 @@
 
     <p id="step2" class="notready">Step 2: Send url</p>
 
-    <input id="url" class="border" type="text" placeholder="e.g. http://example.com" size="30" value="https://www.windytv.com/" disabled/>
+    <input id="url" class="border" type="text" placeholder="e.g. http://example.com" size="30"/>
     <select id="type" disabled>
       <option value="iframe">iframe</option>
       <option value="loc">location</option>
@@ -134,7 +134,7 @@
       sendMessage({type: type, url: url});
     };
 
-    var applicationID = '5CB45E5A'
+    var applicationID = '102527C3'
       , namespace = 'urn:x-cast:com.url.cast'
       , receiverDead = false
       , session = null;
