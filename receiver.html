@@ -34,7 +34,7 @@
 
           if (msg.type === 'setFrame') updateFrame(msg.data);
           if (msg.type === 'move') {
-            document.getElementById('iframe').scrollTop = msg.data;
+            document.getElementById('iframe').contentWindow.scrollTo(0, msg.data);
           }
 
         };
