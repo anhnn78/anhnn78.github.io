@@ -34,7 +34,8 @@
 
           if (msg.type === 'setFrame') updateFrame(msg.data);
           if (msg.type === 'move') {
-            document.getElementById('iframe').contentWindow.scrollTo(0, msg.data);
+            frame = document.getElementById('iframe');
+            frame.contentWindow.scrollTo(0, msg.data);
           }
 
         };
