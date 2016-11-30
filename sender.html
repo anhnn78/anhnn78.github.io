@@ -31,6 +31,7 @@
       font-weight: bold;
       padding: 10px 15px;
       background: #FFF;
+      cursor: pointer;
     }
 
     input:focus, select:focus, button:focus {outline: none;}
@@ -39,48 +40,10 @@
       border-color: #8ecaed;
       box-shadow: 0 0 5px #8ecaed;
     }
-
-    select {
-      padding: 10px 38px 10px 15px;
-      background: url('./br_down.png') no-repeat right #fff;
-      -webkit-appearance: none;
-      background-position-x: 120px;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-    }
-
-    input[disabled], select[disabled], button[disabled] {
-      background: #FAFAFA;
-      cursor: not-allowed;
-    }
-
-    select[disabled] {
-      background: url('./br_down.png') no-repeat right #FAFAFA;
-      -webkit-appearance: none;
-      background-position-x: 120px;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-    }
-
-    .complete, .complete a {text-decoration: line-through; color: #ccc;}
-    .notready {color: #ccc;}
-
-    #notifications {position: fixed; bottom: 0; right: 0;}
-    .notification {
-      background: #222;
-      color: #FFF;
-      padding: 13px 20px;
-      margin: 10px;
-      border-radius: 2px;
-    }
-
-    .error {
-      background: #e64a4a;
-      color: #FFF;
-      padding: 13px 20px;
-      margin: 10px;
-      border-radius: 2px;
-    }
+		
+		#up, #down {
+			display: none;
+		}
   </style>
 </head>
 
@@ -88,50 +51,34 @@
   <div id="wrapper">
     <h1>URL Cast Receiver</h1>
 
-    <p id="step1">Step 1:</p>
-    <button id="requestSession">Start cast session</button>
+    <!-- <button id="requestSession">Start cast</button> -->
 
-    <p id="step2" class="notready">Step 2: Send url</p>
+    <input id="url" class="border" type="text" placeholder="https://www.windytv.com/" size="30" value="https://www.windytv.com/" />
 
-    <input id="url" class="border" type="text" placeholder="e.g. http://example.com" size="30"/>
-    <select id="type" disabled>
-      <option value="iframe">iframe</option>
-      <option value="loc">location</option>
-    </select>
-    <button id="send" disabled>send</button>
-
-    <h3>Details</h3>
-    <p>
-      There are two methods for casting, with pros and cons:
-
-      <ol>
-        <li>Load an iframe (You will have trouble loading a url with x-frame-options: same origin.)</li>
-        <li>Change the window location (You will lose control when you load the url over the receiver.)</li>
-      </ol>
-
-      Also, notice the chromecast viewport is 1280x720 and the default background is black before the receiver loads.
-    </p>
-
-    <p><a href="#">&laquo; GitHub</a></p>
+    <button id="send">Start cast</button>
+		
+		<br>
+		<hr>
+		<button id="up">Up</button>
+		<br>
+		<button id="down">Down</button>
   </div>
-
-  <div id="notifications"></div>
 
   <script type="text/javascript" src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js"></script>
   <script type="text/javascript">
 
     // click handlers
-    document.getElementById('requestSession').onclick = function() {
-      chrome.cast.requestSession(sessionListener, onErr);
-    };
+    // document.getElementById('requestSession').onclick = function() {
+    //   chrome.cast.requestSession(sessionListener, onErr);
+    // };
 
     document.getElementById('send').onclick = function() {
       var url = document.getElementById('url').value
-        , type = document.getElementById('type').value;
+        , type = 'setFrame';
 
-      if (!url || !type) return;
+      if (!url) return;
 
-      sendMessage({type: type, url: url});
+      sendMessage({type: setFrame, url: url});
     };
 
     var applicationID = '102527C3'
@@ -175,7 +122,12 @@
       session.addUpdateListener(sessionUpdateListener);
       session.addMessageListener(namespace, receiveMessage);
 
-      enableInputs();
+      var url = document.getElementById('url').value
+        , type = 'setFrame';
+
+      if (!url) return;
+
+      sendMessage({type: type, url: url});
     }
 
     function receiverListener(e) {
@@ -187,7 +139,6 @@
     function sessionUpdateListener(isAlive) {
       if (!isAlive) {
         session = null;
-        disableInputs();
       }
       console.log('Session is alive?: ', isAlive);
     }
@@ -199,74 +150,24 @@
     }
 
     function sendMessage(msg) {
-      if (receiverDead || !session) return;
+      if (receiverDead || !session) {
+      	chrome.cast.requestSession(sessionListener, onErr);
 
-      // send msg
-      session.sendMessage(
-        namespace,
-        msg,
-        function() {
-          console.log('Message sent: ', msg);
-          notify('Message sent: ' + JSON.stringify(msg));
-        },
-        onErr
-      );
+      } else {
+	      	session.sendMessage(
+	        namespace,
+	        msg,
+	        function() {
+	          console.log('Message sent: ', msg);
+	        },
+	        onErr
+	      );
 
-      if (msg.type === 'loc') {
-        receiverDead = true;
-        disableInputs();
-        notify('Receiver will now be unresponsive');
+	      document.getElementById('up').style.display = 'block';
+	      document.getElementById('down').style.display = 'block';
       }
     }
 
-    function notify(msg) {
-      var el = document.getElementById('notifications')
-        , notice = document.createElement('div');
-
-      notice.className = 'notification';
-      notice.innerHTML = msg;
-
-      el.appendChild(notice);
-
-      // notice self destruct timer
-      setTimeout(function() {
-        el.removeChild(notice);
-      }, 5000);
-    }
-
-    function showError(err) {
-      var el = document.getElementById('notifications')
-        , notice = document.createElement('div');
-
-      notice.className = 'error';
-      notice.innerHTML = 'Got error!: ' + JSON.stringify(err);
-
-      el.appendChild(notice);
-
-      // notice self destruct timer
-      setTimeout(function() {
-        el.removeChild(notice);
-      }, 5000);
-    }
-
-    function enableInputs() {
-      document.getElementById('url').disabled = false;
-      document.getElementById('type').disabled = false;
-      document.getElementById('send').disabled = false;
-
-      document.getElementById('step1').classList.add('complete');
-      document.getElementById('step2').classList.remove('notready');
-      document.getElementById('url').focus();
-    }
-
-    function disableInputs() {
-      document.getElementById('url').disabled = true;
-      document.getElementById('type').disabled = true;
-      document.getElementById('send').disabled = true;
-
-      document.getElementById('step1').classList.remove('complete');
-      document.getElementById('step2').classList.add('notready');
-    }
 
   </script>
 </body>

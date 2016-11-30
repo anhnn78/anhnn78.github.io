@@ -32,8 +32,9 @@
 
           window.messageBus.send(e.senderId, 'ok');
 
-          if (msg.type === 'iframe') updateFrame(msg.url);
-          if (msg.type === 'loc') updateLocation(msg.url);
+          if (msg.type === 'setFrame') updateFrame(msg.url);
+          // if (msg.type === 'moveDown') updateFrame(msg.url);
+
         };
 
         // initialize CastReceiverManager
