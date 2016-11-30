@@ -47,13 +47,7 @@
         window.castReceiverManager.setApplicationState('Now Playing: ' + url);
         document.getElementById('iframe').src = url;
       }
-
-      // Set the window location to the URL
-      // warning: this reciever dies essentially, because you navigated away
-      function updateLocation(url) {
-        window.castReceiverManager.setApplicationState('Now Playing: ' + url);
-        window.location.href = url;
-      }
+      
     </script>
   </body>
 </html>
