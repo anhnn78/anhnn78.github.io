@@ -33,7 +33,7 @@
         window.messageBus.onMessage = function(e) {
           var msg = JSON.parse(e.data);
 
-          window.messageBus.send(e.senderId, msg.data);
+          window.messageBus.send(e.senderId, 'Got URL: ' + msg.data + ' Casting is in progess. Please wait...');
 
           if (msg.type === 'setFrame') updateFrame(msg.data);
           if (msg.type === 'move') {
