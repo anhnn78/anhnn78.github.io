@@ -73,11 +73,13 @@
     // };
 
     document.getElementById('up').onclick = function () {
-    	sendMessage({type: 'move', data: 50});
+    	var type = 'move', data = 50;
+    	sendMessage({type: type, data: data});
     }
 
     document.getElementById('down').onclick = function () {
-    	sendMessage({type: 'move', data: -50});
+    	var type = 'move', data = -50;
+    	sendMessage({type: type, data: data});
     }
 
 
