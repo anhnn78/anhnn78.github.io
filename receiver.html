@@ -32,8 +32,10 @@
 
           window.messageBus.send(e.senderId, 'ok');
 
-          if (msg.type === 'setFrame') updateFrame(msg.url);
-          // if (msg.type === 'moveDown') updateFrame(msg.url);
+          if (msg.type === 'setFrame') updateFrame(msg.data);
+          if (msg.type === 'move') {
+            window.scrollBy(0, msg.data);
+          }
 
         };
 
@@ -47,7 +49,7 @@
         window.castReceiverManager.setApplicationState('Now Playing: ' + url);
         document.getElementById('iframe').src = url;
       }
-      
+
     </script>
   </body>
 </html>

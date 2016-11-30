@@ -72,13 +72,22 @@
     //   chrome.cast.requestSession(sessionListener, onErr);
     // };
 
+    document.getElementById('up').onclick = function () {
+    	sendMessage({type: 'move', data: 100});
+    }
+
+    document.getElementById('down').onclick = function () {
+    	sendMessage({type: 'move', data: -100});
+    }
+
+
     document.getElementById('send').onclick = function() {
       var url = document.getElementById('url').value
         , type = 'setFrame';
 
       if (!url) return;
 
-      sendMessage({type: type, url: url});
+      sendMessage({type: type, data: url});
     };
 
     var applicationID = '102527C3'
@@ -127,7 +136,7 @@
 
       if (!url) return;
 
-      sendMessage({type: type, url: url});
+      sendMessage({type: type, data: url});
     }
 
     function receiverListener(e) {
